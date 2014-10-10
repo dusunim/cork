@@ -80,7 +80,7 @@ private: // methods
             if(entry.data.is_isct) {
                 ShortVec<uint, 2> tid0s;
                 ShortVec<uint, 2> tid1s;
-				for(size_t ind=0; ind!=entry.tids.size(); ++ind)
+				for(uint ind=0; ind!=entry.tids.size(); ++ind)
 				{
 					const uint& tid = entry.tids[ind];
                     if(boolData(tid) & 1)
@@ -155,7 +155,7 @@ private: // data
 };
 
 
-static inline double triArea(
+inline double triArea(
     Vec3d a, Vec3d b, Vec3d c
 ) {
     return len(cross(b-a, c-a));
@@ -184,7 +184,7 @@ void Mesh<VertData,TriData>::BoolProblem::doSetup(
     // of the two input meshes.
     // These components are not necessarily uniformly inside or outside
     // of the other operand mesh.
-    UnionFind uf(mesh->tris.size());
+    UnionFind uf(static_cast<uint>(mesh->tris.size()));
     for_ecache([&](uint, uint, bool, const ShortVec<uint, 2> &tids) {
         uint tid0 = tids[0];
         for(uint k=1; k<tids.size(); k++)
@@ -197,10 +197,10 @@ void Mesh<VertData,TriData>::BoolProblem::doSetup(
     for(uint i=0; i<mesh->tris.size(); i++) {
         uint ufid = uf.find(i);
         if(uq_ids[ufid] == uint(-1)) { // unassigned
-            uint N = components.size();
+            size_t N = components.size();
             components.push_back(std::vector<uint>());
             
-            uq_ids[ufid] = uq_ids[i] = N;
+            uq_ids[ufid] = uq_ids[i] = static_cast<uint>(N);
             components[N].push_back(i);
         } else { // assigned already
             uq_ids[i] = uq_ids[ufid]; // propagate assignment
@@ -255,9 +255,9 @@ void Mesh<VertData,TriData>::BoolProblem::doSetup(
                 auto &entry = ecache(a,b);
                 byte inside_sig = boolData(curr_tid) & 2;
                 if(entry.data.is_isct)  inside_sig ^= 2;
-                for(size_t ind=0; ind!=entry.tids.size(); ++ind)
-				{
-					const uint& tid = entry.tids[ind];
+                for(uint ind=0; ind!=entry.tids.size(); ++ind)
+                {
+                    const uint& tid = entry.tids[ind];
                     if(visited[tid])                    continue;
                     if((boolData(tid)&1) != operand)    continue;
                     
@@ -304,7 +304,7 @@ void Mesh<VertData,TriData>::BoolProblem::doDeleteAndFlip(
 
 
 
-static TriCode lambda1(byte data)
+inline TriCode lambdaUnion(byte data)
 {
 	if((data & 2) == 2)     // part of op 0/1 INSIDE op 1/0
 		return DELETE_TRI;
@@ -320,18 +320,18 @@ void Mesh<VertData,TriData>::boolUnion(Mesh &rhs)
 
     bprob.doSetup(rhs);
 
-	bprob.doDeleteAndFlip(lambda1);
+	bprob.doDeleteAndFlip(lambdaUnion);
 }
 
-static TriCode lambda2(byte data)
+inline TriCode lambdaDiff(byte data)
 {
-        if(data == 2 ||         // part of op 0 INSIDE op 1
-           data == 1)           // part of op 1 OUTSIDE op 0
-            return DELETE_TRI;
-        else if(data == 3)      // part of op 1 INSIDE op 1
-            return FLIP_TRI;
-        else                    // part of op 0 OUTSIDE op 1
-            return KEEP_TRI;
+	if(	data == 2 ||         // part of op 0 INSIDE op 1
+		data == 1)           // part of op 1 OUTSIDE op 0
+		return DELETE_TRI;
+	else if (data == 3)      // part of op 1 INSIDE op 1
+		return FLIP_TRI;
+	else                    // part of op 0 OUTSIDE op 1
+		return KEEP_TRI;
 }
 
 template<class VertData, class TriData>
@@ -341,15 +341,15 @@ void Mesh<VertData,TriData>::boolDiff(Mesh &rhs)
 
     bprob.doSetup(rhs);
 
-    bprob.doDeleteAndFlip(lambda2);
+    bprob.doDeleteAndFlip(lambdaDiff);
 }
 
-static TriCode lambda3(byte data)
+inline TriCode lambdaIsct(byte data)
 {
-        if((data & 2) == 0)     // part of op 0/1 OUTSIDE op 1/0
-            return DELETE_TRI;
-        else                    // part of op 0/1 INSIDE op 1/0
-            return KEEP_TRI;
+	if((data & 2) == 0)     // part of op 0/1 OUTSIDE op 1/0
+		return DELETE_TRI;
+	else                    // part of op 0/1 INSIDE op 1/0
+		return KEEP_TRI;
 }
 
 template<class VertData, class TriData>
@@ -359,15 +359,15 @@ void Mesh<VertData,TriData>::boolIsct(Mesh &rhs)
     
     bprob.doSetup(rhs);
     
-    bprob.doDeleteAndFlip(lambda3);
+    bprob.doDeleteAndFlip(lambdaIsct);
 }
 
-static TriCode lambda4(byte data)
+inline TriCode lambdaXor(byte data)
 {
-        if((data & 2) == 0)     // part of op 0/1 OUTSIDE op 1/0
-            return KEEP_TRI;
-        else                    // part of op 0/1 INSIDE op 1/0
-            return FLIP_TRI;
+	if((data & 2) == 0)     // part of op 0/1 OUTSIDE op 1/0
+		return KEEP_TRI;
+	else                    // part of op 0/1 INSIDE op 1/0
+		return FLIP_TRI;
 }
 
 template<class VertData, class TriData>
@@ -377,5 +377,5 @@ void Mesh<VertData,TriData>::boolXor(Mesh &rhs)
 
     bprob.doSetup(rhs);
 
-	bprob.doDeleteAndFlip(lambda4);
+	bprob.doDeleteAndFlip(lambdaXor);
 }

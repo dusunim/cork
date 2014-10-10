@@ -241,6 +241,12 @@ private:    // Internal stuff
     inline void move_tri(Tri &t_new, Tri &t_old);
     inline void subdivide_tri(uint t_piece_ref, uint t_parent_ref);
     
+public:
+	inline std::vector<Tri>&            getTris() { return tris; }
+	inline const std::vector<Tri>&      getTris() const { return tris; }
+	inline std::vector<VertData>&       getVerts() { return verts; }
+	inline const std::vector<VertData>& getVerts() const { return verts; }
+
 private:    // DATA
     std::vector<Tri>        tris;
     std::vector<VertData>   verts;
@@ -297,7 +303,7 @@ private:    // caches
 		{
 			for(uint i=0; i<skeleton.size(); i++)
 			{
-				for(size_t ind=0; ind != skeleton[i].size(); ++ind)
+				for(uint ind=0; ind != skeleton[i].size(); ++ind)
 				{
 					action(i, skeleton[i][ind].vid, skeleton[i][ind]);
 				}

@@ -37,13 +37,6 @@
  *  to make it easier to support multiple file types using other people's
  *  file importer/exporter code
  */
-#if defined(_WINDLL)
-#define CORK_IMP_EXP __declspec(dllexport)
-#elif defined(CORK_STATIC)
-#define CORK_IMP_EXP
-#else
-#define CORK_IMP_EXP __declspec(dllimport)
-#endif
 
 namespace Files {
 
@@ -57,14 +50,14 @@ typedef RawMesh<FileVertex,FileTriangle> FileMesh;
 
 // generic filetype functions
 // these detect which filetype to use by inspecting the filename
-CORK_IMP_EXP int readTriMesh(std::string filename, FileMesh *mesh);
-CORK_IMP_EXP int writeTriMesh(std::string filename, FileMesh *mesh);
+int readTriMesh(std::string filename, FileMesh *mesh);
+int writeTriMesh(std::string filename, FileMesh *mesh);
 
 // specific filetype functions
-CORK_IMP_EXP int readIFS(std::string filename, FileMesh *mesh);
-CORK_IMP_EXP int writeIFS(std::string filename, FileMesh *mesh);
+int readIFS(std::string filename, FileMesh *mesh);
+int writeIFS(std::string filename, FileMesh *mesh);
 
-CORK_IMP_EXP int readOFF(std::string filename, FileMesh *mesh);
-CORK_IMP_EXP int writeOFF(std::string filename, FileMesh *mesh);
+int readOFF(std::string filename, FileMesh *mesh);
+int writeOFF(std::string filename, FileMesh *mesh);
 
 } // end namespace Files
