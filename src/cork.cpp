@@ -310,8 +310,6 @@ namespace Cork
 
 			m_resNumTriangles = corkMeshA->numTris();
 			m_resNumVertices = corkMeshA->numVerts();
-
-			return true;
 		}
 		else
 		{
