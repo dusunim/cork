@@ -14,7 +14,7 @@ using std::ostream;
 
 
 void file2corktrimesh(
-    const Files::FileMesh &in, CorkTriMesh *out
+    const Files::FileMesh &in, Cork::CorkTriMesh *out
 ) {
     out->n_vertices = in.vertices.size();
     out->n_triangles = in.triangles.size();
@@ -36,7 +36,7 @@ void file2corktrimesh(
 }
 
 void corktrimesh2file(
-    CorkTriMesh in, Files::FileMesh &out
+    Cork::CorkTriMesh in, Files::FileMesh &out
 ) {
     out.vertices.resize(in.n_vertices);
     out.triangles.resize(in.n_triangles);
@@ -54,7 +54,7 @@ void corktrimesh2file(
     }
 }
 
-void loadMesh(string filename, CorkTriMesh *out)
+void loadMesh(string filename, Cork::CorkTriMesh *out)
 {
     Files::FileMesh filemesh;
     
@@ -65,7 +65,7 @@ void loadMesh(string filename, CorkTriMesh *out)
     
     file2corktrimesh(filemesh, out);
 }
-void saveMesh(string filename, CorkTriMesh in)
+void saveMesh(string filename, Cork::CorkTriMesh in)
 {
     Files::FileMesh filemesh;
     
@@ -84,16 +84,16 @@ void saveMesh(string filename, CorkTriMesh in)
 //    const std::vector<string>::iterator &
 //) >
 //genericBinaryOp(
-//    std::function< void(CorkTriMesh in0, CorkTriMesh in1, CorkTriMesh *out) >
+//    std::function< void(Cork::CorkTriMesh in0, Cork::CorkTriMesh in1, Cork::CorkTriMesh *out) >
 //        binop
 //) {
 //    return [binop]
 //    (std::vector<string>::iterator &args,
 //     const std::vector<string>::iterator &end) {
 //        // data...
-//        CorkTriMesh in0;
-//        CorkTriMesh in1;
-//        CorkTriMesh out;
+//        Cork::CorkTriMesh in0;
+//        Cork::CorkTriMesh in1;
+//        Cork::CorkTriMesh out;
 //        
 //        if(args == end) { cerr << "too few args" << endl; exit(1); }
 //        loadMesh(*args, &in0);
@@ -130,9 +130,9 @@ int main(int argc, char *argv[])
     }
 
 	// data...
-	CorkTriMesh in0;
-	CorkTriMesh in1;
-	CorkTriMesh out;
+	Cork::CorkTriMesh in0;
+	Cork::CorkTriMesh in1;
+	Cork::CorkTriMesh out;
 
 	loadMesh(argv[2], &in0);
 	{

@@ -291,6 +291,24 @@ namespace Cork
 
 		if (convert(corkMeshA, A) && convert(&corkMeshB, B))
 		{
+			/*
+			if (corkMeshA->isSelfIntersecting())
+			{
+				m_errorStr += "[Cork] Mesh A is self-intersecting!\n";
+			}
+			else if (!corkMeshA->isClosed())
+			{
+				m_errorStr += "[Cork] Mesh A is not solid\n";
+			}
+			if (corkMeshB.isSelfIntersecting())
+			{
+				m_errorStr += "[Cork] Mesh B is self-intersecting!\n";
+			}
+			else if (!corkMeshB.isClosed())
+			{
+				m_errorStr += "[Cork] Mesh B is not solid\n";
+			}*/
+
 			switch (P)
 			{
 			case Intersection:
