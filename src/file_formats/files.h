@@ -31,6 +31,8 @@
 
 #include "../rawmesh/rawMesh.h"
 
+#include "../cork.h"
+
 /*
  *  Files provides a wrapper for different file types and a common
  *  data view for the rest of the program.  This wrapper was introduced
@@ -50,8 +52,8 @@ typedef RawMesh<FileVertex,FileTriangle> FileMesh;
 
 // generic filetype functions
 // these detect which filetype to use by inspecting the filename
-int readTriMesh(std::string filename, FileMesh *mesh);
-int writeTriMesh(std::string filename, FileMesh *mesh);
+CORK_IMP_EXP int readTriMesh(std::string filename, FileMesh *mesh);
+CORK_IMP_EXP int writeTriMesh(std::string filename, FileMesh *mesh);
 
 // specific filetype functions
 int readIFS(std::string filename, FileMesh *mesh);

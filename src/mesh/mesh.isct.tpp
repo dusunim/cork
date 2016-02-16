@@ -1217,7 +1217,7 @@ bool Mesh<VertData,TriData>::IsctProblem::checkIsct(Eptr e, Tptr t)
     Empty3d::TriEdgeIn input;
     marshallArithmeticInput(input, e, t);
 
-#define USE_ORIGINAL_CODE
+//#define USE_ORIGINAL_CODE
 #ifdef USE_ORIGINAL_CODE
     //bool empty = empty3d.isEmpty(input);
     bool empty = empty3d.emptyExact(input);
