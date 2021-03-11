@@ -46,7 +46,7 @@
 
 
 #ifdef _WIN32
-#include <MPIR/mpir.h>
+#include <mpir.h>
 #else
 #include <gmp.h>
 #endif
